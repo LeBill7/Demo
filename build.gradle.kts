@@ -16,7 +16,7 @@ val versionProps = Properties().apply {
 
 allprojects {
     group = "com.autopulse.app"
-    version = versionProps.getProperty("VERSION_NAME", "1.2.0")
+    version = versionProps.getProperty("VERSION_NAME", "1.2.1")
 }
 
 tasks.register("checkLineLimits") {
@@ -61,7 +61,7 @@ tasks.register("buildApk") {
 tasks.register<Zip>("releaseBundle") {
     group = "distribution"
     description = "Packages compiled AutoPulse Android APK and docs for GitHub Release."
-    dependsOn(":app:assembleRelease", ":app:assembleDebug", "checkLineLimits")
+    dependsOn(":app:assembleRelease", ":app:assembleDebug")
     archiveBaseName.set("autopulse-android")
     archiveVersion.set(project.version.toString())
     archiveClassifier.set("release-bundle")

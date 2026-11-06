@@ -42,7 +42,7 @@ flowchart TD
 
 | File Path | Layer | Responsibility |
 | :--- | :--- | :--- |
-| `core/.../core/version/AppVersion.kt` | Core | Semantic version (`1.2.0`) & platform metadata |
+| `core/.../core/version/AppVersion.kt` | Core | Semantic version (`1.2.1`) & platform metadata |
 | `core/.../core/logging/StructuredLogger.kt` | Core | Structured logger with `DEBUG`, `INFO`, `WARN`, `ERROR` and automatic sensitive-key redaction |
 | `core/.../core/result/AppResult.kt` | Core | `AppResult<T>` sealed interface, `AppError` hierarchy, and `runCatchingLogged` boundary wrapper |
 | `core/.../domain/model/VehicleModels.kt` | Domain | Vehicle, rule, health status, and diagnostic report models |

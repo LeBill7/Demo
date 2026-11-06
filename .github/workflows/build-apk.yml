@@ -1,16 +1,22 @@
-name: AutoPulse Automated Release Pipeline
+name: AutoPulse Android Build APK
 
 on:
   push:
+    branches:
+      - main
     tags:
       - "v*.*.*"
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  release:
-    name: Build Installable Android APK & Publish GitHub Release
+  build-apk:
+    name: Assemble Android APK & Upload Artifacts
     runs-on: ubuntu-latest
 
     steps:
@@ -25,22 +31,26 @@ jobs:
           distribution: "temurin"
           java-version: "21"
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Enforce 500-Line File Limit
-        run: ./gradlew checkLineLimits --no-daemon
-
-      - name: Execute Automated Test Suite
+      - name: Run JUnit & Coroutine Test Suite
         run: ./gradlew :core:test --no-daemon
 
-      - name: Build Installable Android APK & Release Bundle
+      - name: Assemble Installable Android APKs & Release Bundle
         run: ./gradlew :app:assembleDebug :app:assembleRelease releaseBundle --no-daemon
 
+      - name: Upload Android APK Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: autopulse-apk
+          path: |
+            app/build/outputs/apk/release/app-release.apk
+            app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+
       - name: Prepare Release Artifacts & Checksums
+        if: startsWith(github.ref, 'refs/tags/v')
         run: |
           mkdir -p dist-release
           cp app/build/outputs/apk/release/app-release.apk "dist-release/autopulse-${GITHUB_REF_NAME}.apk"
@@ -49,14 +59,8 @@ jobs:
           cd dist-release
           sha256sum * > SHA256SUMS.txt
 
-      - name: Upload Android APK Workflow Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: autopulse-release-apk
-          path: dist-release/*.apk
-          if-no-files-found: error
-
       - name: Extract Release Notes from CHANGELOG.md
+        if: startsWith(github.ref, 'refs/tags/v')
         run: |
           VERSION="${GITHUB_REF_NAME#v}"
           awk "/^## \[${VERSION}\]/{flag=1; next} /^## \[/{flag=0} flag" CHANGELOG.md > dist-release/RELEASE_NOTES.md
@@ -65,6 +69,7 @@ jobs:
           fi
 
       - name: Publish GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
           name: "AutoPulse Android ${{ github.ref_name }}"

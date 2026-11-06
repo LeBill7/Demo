@@ -41,7 +41,7 @@ AutoPulse is structured as a multi-module Kotlin 2.0+ & Jetpack Compose project 
 
 ```text
 /workspaces/Demo
-├── .github/workflows/       # CI & Automated GitHub Release pipelines (ci.yml, release.yml)
+├── .github/workflows/       # Unified Android APK Build & Release pipeline (build-apk.yml)
 ├── docs/                    # Living architecture & module documentation (ARCHITECTURE.md)
 ├── core/                    # Pure Kotlin 2.0 Domain, Cryptographic Security, & Data Layer
 │   └── src/
@@ -116,5 +116,5 @@ AutoPulse is structured as a multi-module Kotlin 2.0+ & Jetpack Compose project 
 
 ## 7. CI/CD & Automated GitHub Releases
 
-- **Continuous Integration (`.github/workflows/ci.yml`):** Automatically executes `./gradlew checkLineLimits :core:test :app:assembleDebug :app:assembleRelease releaseBundle` on every push and pull request to `main`, publishing installable APK artifacts.
-- **Automated GitHub Releases (`.github/workflows/release.yml`):** Automatically triggers when a semantic version tag (`v*.*.*`) is pushed, builds production artifacts (`autopulse-vX.Y.Z.apk`, `autopulse-vX.Y.Z-debug.apk`, `autopulse-android-vX.Y.Z-release-bundle.zip`, and `SHA256SUMS.txt`), extracts release notes from `CHANGELOG.md`, and publishes a GitHub Release with compiled APK artifacts attached.
+- **Unified Build APK Pipeline (`.github/workflows/build-apk.yml`):** A single unified automation workflow triggered on pushes to `main`, pull requests, and semantic version tags (`v*.*.*`). It executes `:core:test`, builds installable Android APKs (`app-release.apk`, `app-debug.apk`), generates the distribution release bundle (`autopulse-android-vX.Y.Z-release-bundle.zip`), uploads APK workflow artifacts (`actions/upload-artifact@v4`), and automatically publishes GitHub Releases with compiled APK attachments whenever a semantic version tag is pushed.
+- **Local Dev-Only Code File Limits:** Source file line limit enforcement (`./gradlew checkLineLimits`) is designated strictly as a local pre-commit gate in the dev folder and is excluded from GitHub Actions automation.

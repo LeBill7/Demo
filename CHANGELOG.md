@@ -4,6 +4,15 @@ All notable changes to the **AutoPulse (Native Android Automotive Intelligence P
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.1] - 2026-11-06
+
+### Fixed
+- **GitHub Actions Android SDK Build Environment:** Resolved build failures caused by `android-actions/setup-android@v3` attempting to install the deprecated `tools` package. Standardized on the GitHub runner's native pre-installed Android SDK 34 environment.
+
+### Changed
+- **Unified Build APK Automation (`.github/workflows/build-apk.yml`):** Consolidated separate CI and Release workflows into a single unified automation pipeline. On branch pushes and PRs, it runs unit/integration tests and outputs installable Android APK artifacts (`autopulse-apk`); on version tags (`v*.*.*`), it builds APKs and publishes the GitHub Release.
+- **Local Dev-Only Code File Verification:** Removed `checkLineLimits` from the GitHub Actions automation and decoupled `releaseBundle` so that code file limits are strictly enforced locally in the development workspace.
+
 ## [1.2.0] - 2026-11-06
 
 ### Changed
