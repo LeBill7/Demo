@@ -1,10 +1,12 @@
 # AutoPulse — Native Android Automotive Intelligence Platform (Kotlin + Jetpack Compose)
 
 [![AutoPulse Android CI](https://github.com/LeBill7/Demo/actions/workflows/ci.yml/badge.svg)](https://github.com/LeBill7/Demo/actions/workflows/ci.yml)
-[![Version](https://img.shields.io/badge/version-1.0.0-00F2FE.svg)](./CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.1.0-00F2FE.svg)](./CHANGELOG.md)
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.1.0-7F52FF.svg)](https://kotlinlang.org)
 
-**AutoPulse (`v1.0.0`)** is a native Android (Kotlin + Jetpack Compose Material 3) three-sided automotive intelligence platform engineered using Modern Android Development (MAD) Clean Architecture and Unidirectional Data Flow (MVI).
+**AutoPulse (`v1.1.0`)** is a native Android (Kotlin + Jetpack Compose Material 3) three-sided automotive intelligence platform engineered using Modern Android Development (MAD) Clean Architecture and Unidirectional Data Flow (MVI).
+
+> **Download & Install the APK:** Grab `autopulse-v1.1.0.apk` directly from the [GitHub Releases page](https://github.com/LeBill7/Demo/releases/tag/v1.1.0) or build it locally with `./gradlew :app:assembleDebug` (`app/build/outputs/apk/debug/app-debug.apk`).
 
 ---
 

@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   verify:
-    name: Enforce 500-Line Gate, Kotlin Test Suite & Build
+    name: Enforce 500-Line Gate, Kotlin Test Suite & APK Build
     runs-on: ubuntu-latest
 
     steps:
@@ -26,6 +26,9 @@ jobs:
           distribution: "temurin"
           java-version: "21"
 
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
@@ -33,7 +36,7 @@ jobs:
         run: ./gradlew checkLineLimits --no-daemon
 
       - name: Run Full JUnit & Coroutine Test Suite
-        run: ./gradlew test --no-daemon
+        run: ./gradlew :core:test --no-daemon
 
-      - name: Build Production Artifacts
-        run: ./gradlew build releaseBundle --no-daemon
+      - name: Assemble Installable Android APK & Release Bundle
+        run: ./gradlew :app:assembleDebug releaseBundle --no-daemon

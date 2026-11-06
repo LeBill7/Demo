@@ -1,7 +1,10 @@
 import java.util.Properties
 
 plugins {
+    id("com.android.application") version "8.7.2" apply false
     kotlin("jvm") version "2.1.0" apply false
+    kotlin("android") version "2.1.0" apply false
+    id("org.jetbrains.kotlin.plugin.compose") version "2.1.0" apply false
 }
 
 val versionProps = Properties().apply {
@@ -13,7 +16,7 @@ val versionProps = Properties().apply {
 
 allprojects {
     group = "com.autopulse.app"
-    version = versionProps.getProperty("VERSION_NAME", "1.0.0")
+    version = versionProps.getProperty("VERSION_NAME", "1.1.0")
 }
 
 tasks.register("checkLineLimits") {
@@ -51,8 +54,8 @@ tasks.register("checkLineLimits") {
 
 tasks.register<Zip>("releaseBundle") {
     group = "distribution"
-    description = "Packages compiled AutoPulse core JAR, Android Compose UI sources, and docs for GitHub Release."
-    dependsOn(":core:build", "checkLineLimits")
+    description = "Packages compiled AutoPulse APK, core JAR, and docs for GitHub Release."
+    dependsOn(":core:build", ":app:assembleDebug", "checkLineLimits")
     archiveBaseName.set("autopulse-android")
     archiveVersion.set(project.version.toString())
     archiveClassifier.set("release-bundle")
@@ -61,8 +64,9 @@ tasks.register<Zip>("releaseBundle") {
     from(project(":core").layout.buildDirectory.dir("libs")) {
         into("libs")
     }
-    from("app/src") {
-        into("android-compose-app/src")
+    from(project(":app").layout.buildDirectory.dir("outputs/apk/debug")) {
+        include("*.apk")
+        into("apk")
     }
     from("README.md", "CHANGELOG.md", "GEMINI.md", "version.properties")
     from("docs") {

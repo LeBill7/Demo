@@ -4,6 +4,12 @@ All notable changes to the **AutoPulse (Native Android Automotive Intelligence P
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-11-06
+
+### Added
+- **Installable Android APK Package (`:app`, `autopulse-v1.1.0.apk`):** Configured Android Gradle Plugin (`com.android.application`), Jetpack Compose Compiler plugin, `AutoPulseApplication.kt`, and `MainActivity.kt` with a 4-tab Material 3 navigation bar (`1. Garage HUD`, `2. Translator`, `3. Shop Bay`, `4. Passport`) to compile an installable `.apk` directly for Android devices and emulators.
+- **Automated APK Release Attachment (`.github/workflows/release.yml`):** Updated the GitHub Actions release pipeline to compile and attach `autopulse-v1.1.0.apk` alongside `core-1.1.0.jar`, `autopulse-android-1.1.0-release-bundle.zip`, and `SHA256SUMS.txt`.
+
 ## [1.0.0] - 2026-11-06
 
 ### Added

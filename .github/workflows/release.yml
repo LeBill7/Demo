@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   release:
-    name: Build Production Artifacts & Publish GitHub Release
+    name: Build Installable Android APK & Publish GitHub Release
     runs-on: ubuntu-latest
 
     steps:
@@ -25,6 +25,9 @@ jobs:
           distribution: "temurin"
           java-version: "21"
 
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
@@ -32,14 +35,15 @@ jobs:
         run: ./gradlew checkLineLimits --no-daemon
 
       - name: Execute Automated Test Suite
-        run: ./gradlew test --no-daemon
+        run: ./gradlew :core:test --no-daemon
 
-      - name: Build Production JAR & Release Bundle
-        run: ./gradlew build releaseBundle --no-daemon
+      - name: Build Installable Android APK, Core JAR & Release Bundle
+        run: ./gradlew :app:assembleDebug :app:assembleRelease releaseBundle --no-daemon
 
       - name: Prepare Release Artifacts & Checksums
         run: |
           mkdir -p dist-release
+          cp app/build/outputs/apk/debug/app-debug.apk "dist-release/autopulse-${GITHUB_REF_NAME}.apk"
           cp core/build/libs/*.jar dist-release/
           cp build/distributions/*.zip dist-release/
           cd dist-release
@@ -61,6 +65,7 @@ jobs:
           draft: false
           prerelease: false
           files: |
+            dist-release/*.apk
             dist-release/*.jar
             dist-release/*.zip
             dist-release/SHA256SUMS.txt

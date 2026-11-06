@@ -15,4 +15,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "AutoPulse"
-include(":core")
+include(":core", ":app")
