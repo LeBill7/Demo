@@ -4,6 +4,17 @@ All notable changes to the **AutoPulse (Native Android Automotive Intelligence P
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2026-11-06
+
+### Added
+- **Complete UI/UX Redesign & Progressive Disclosure (`design.md`):** Replaced raw unguided data dumps with an action-first automotive copilot, prioritized action queues (`OVERDUE` and `DUE_SOON` first), and collapsible healthy subsystem accordions.
+- **250dp Ultra-Compact Responsive Layout Engine (`AdaptiveLayoutUtils.kt`):** Built responsive breakpoint architecture (`TINY < 300dp`, `COMPACT`, `EXPANDED`). On screens down to 250dp, paddings decrease to 8dp, multi-column rows stack vertically, rolling odometer digits scale down (18dp width vs 26dp), and navigation switches to compact icon/short-label tabs with indicator pills.
+- **Modular Presentation Architecture:** Deconstructed legacy monolithic screens into dedicated screen components (`DriverGarageScreen.kt`, `MechanicTranslatorScreen.kt`, `PartnerShopTerminalScreen.kt`, `TrustPassportScreen.kt`, `OdometerUpdateModal.kt`), strictly adhering to the 500-line ceiling.
+- **Mechanic Negotiation Copilot:** Added preset common repair chips, real-time Quote Fairness Meter, and interactive "Questions to Ask Your Mechanic" checklist.
+- **Partner Shop Intake & Certification Bay:** Implemented a 3-step technician intake flow with multi-service checkoffs, real-time pricing calculation, and SHA-256 seal generation.
+- **Visual Trust Passport & Anti-Fraud Shield:** Replaced ASCII text dumps with 0–100 Trust Score gauges, Anti-Fraud verification checklists, and cryptographic ledger timeline cards.
+- **Design System & App Icon (`docs/art/autopulse_app_icon.jpg`):** Defined the authoritative Obsidian Cockpit design language (`design.md`) and generated the official high-resolution AutoPulse app icon.
+
 ## [1.2.2] - 2026-11-06
 
 ### Added

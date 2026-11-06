@@ -6,6 +6,8 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -25,43 +27,68 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.autopulse.app.presentation.theme.AutoPulseColors
 
 @Composable
 fun RollingOdometer(
     mileage: Int,
     modifier: Modifier = Modifier,
-    digitCount: Int = 6
+    isTiny: Boolean = false,
+    digitCount: Int = 6,
+    onClick: (() -> Unit)? = null
 ) {
     val formattedMileage = remember(mileage, digitCount) {
         mileage.coerceAtLeast(0).toString().padStart(digitCount, '0')
     }
 
+    val digitBoxWidth = if (isTiny) 18.dp else 26.dp
+    val digitBoxHeight = if (isTiny) 32.dp else 44.dp
+    val digitFontSize = if (isTiny) 18.sp else 28.sp
+    val commaFontSize = if (isTiny) 18.sp else 28.sp
+    val unitFontSize = if (isTiny) 11.sp else 14.sp
+    val containerPaddingH = if (isTiny) 8.dp else 12.dp
+    val containerPaddingV = if (isTiny) 4.dp else 8.dp
+
+    val baseMod = modifier
+        .clip(RoundedCornerShape(8.dp))
+        .background(Color(0xFF16191F))
+        .border(1.dp, AutoPulseColors.SurfaceBorder, RoundedCornerShape(8.dp))
+        .padding(horizontal = containerPaddingH, vertical = containerPaddingV)
+
+    val finalMod = if (onClick != null) {
+        baseMod.clickable { onClick() }
+    } else {
+        baseMod
+    }
+
     Row(
-        modifier = modifier
-            .clip(RoundedCornerShape(8.dp))
-            .background(Color(0xFF16191F))
-            .padding(horizontal = 12.dp, vertical = 8.dp),
+        modifier = finalMod,
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
         formattedMileage.forEachIndexed { index, char ->
-            SingleDigitTumbler(digit = char)
+            SingleDigitTumbler(
+                digit = char,
+                boxWidth = digitBoxWidth,
+                boxHeight = digitBoxHeight,
+                fontSize = digitFontSize
+            )
             if (index == 2 && digitCount == 6) {
                 Text(
                     text = ",",
                     color = Color.Gray,
-                    fontSize = 28.sp,
+                    fontSize = commaFontSize,
                     fontWeight = FontWeight.Bold,
                     fontFamily = FontFamily.Monospace,
-                    modifier = Modifier.padding(horizontal = 2.dp)
+                    modifier = Modifier.padding(horizontal = 1.dp)
                 )
             }
         }
-        Spacer(modifier = Modifier.width(8.dp))
+        Spacer(modifier = Modifier.width(if (isTiny) 4.dp else 8.dp))
         Text(
             text = "MI",
-            color = Color(0xFF00F2FE),
-            fontSize = 14.sp,
+            color = AutoPulseColors.PrimaryCyan,
+            fontSize = unitFontSize,
             fontWeight = FontWeight.Bold,
             fontFamily = FontFamily.Monospace
         )
@@ -69,11 +96,16 @@ fun RollingOdometer(
 }
 
 @Composable
-private fun SingleDigitTumbler(digit: Char) {
+private fun SingleDigitTumbler(
+    digit: Char,
+    boxWidth: androidx.compose.ui.unit.Dp,
+    boxHeight: androidx.compose.ui.unit.Dp,
+    fontSize: androidx.compose.ui.unit.TextUnit
+) {
     Box(
         modifier = Modifier
-            .width(26.dp)
-            .height(44.dp)
+            .width(boxWidth)
+            .height(boxHeight)
             .clip(RoundedCornerShape(4.dp))
             .background(Color(0xFF0B0D11)),
         contentAlignment = Alignment.Center
@@ -94,7 +126,7 @@ private fun SingleDigitTumbler(digit: Char) {
             Text(
                 text = targetDigit.toString(),
                 color = Color.White,
-                fontSize = 28.sp,
+                fontSize = fontSize,
                 fontWeight = FontWeight.Black,
                 fontFamily = FontFamily.Monospace
             )

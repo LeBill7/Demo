@@ -1,12 +1,18 @@
 # AutoPulse — Native Android Automotive Intelligence Platform (Kotlin + Jetpack Compose)
 
 [![AutoPulse Android Build](https://github.com/LeBill7/Demo/actions/workflows/build-apk.yml/badge.svg)](https://github.com/LeBill7/Demo/actions/workflows/build-apk.yml)
-[![Version](https://img.shields.io/badge/version-1.2.2-00F2FE.svg)](./CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.3.0-00F2FE.svg)](./CHANGELOG.md)
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.1.0-7F52FF.svg)](https://kotlinlang.org)
 
-**AutoPulse (`v1.2.2`)** is a native Android (Kotlin + Jetpack Compose Material 3) three-sided automotive intelligence platform engineered using Modern Android Development (MAD) Clean Architecture and Unidirectional Data Flow (MVI).
+<p align="center">
+  <img src="./docs/art/autopulse_app_icon.jpg" width="128" height="128" alt="AutoPulse App Icon" style="border-radius: 24px;" />
+</p>
 
-> **Download & Install the APK:** Grab `autopulse-v1.2.2.apk` directly from the [GitHub Releases page](https://github.com/LeBill7/Demo/releases/tag/v1.2.2) or build it locally with `./gradlew :app:assembleRelease` (`app/build/outputs/apk/release/app-release.apk`) or `./gradlew :app:assembleDebug` (`app/build/outputs/apk/debug/app-debug.apk`).
+**AutoPulse (`v1.3.0`)** is a native Android (Kotlin + Jetpack Compose Material 3) three-sided automotive intelligence platform engineered using Modern Android Development (MAD) Clean Architecture and Unidirectional Data Flow (MVI).
+
+> **Download & Install the APK:** Grab `autopulse-v1.3.0.apk` directly from the [GitHub Releases page](https://github.com/LeBill7/Demo/releases/tag/v1.3.0) or build it locally with `./gradlew :app:assembleRelease` (`app/build/outputs/apk/release/app-release.apk`) or `./gradlew :app:assembleDebug` (`app/build/outputs/apk/debug/app-debug.apk`).
+>
+> **250dp Ultra-Compact Viewport Support:** The entire UI is built with an adaptive responsive engine (`AdaptiveLayoutUtils.kt`) that seamlessly scales down to 250dp displays (wearables, automotive sub-gauges, narrow split-screens) without text clipping or overflow.
 >
 > **Deterministic APK Signature:** All builds (local and GitHub Actions CI/CD) are cryptographically signed with the permanent release keystore (`app/autopulse-release.jks`, valid through 2054).
 > - **Certificate SHA-256:** `05:44:DC:21:6A:AA:A5:57:E5:05:5B:6D:30:D5:E3:F3:A9:F8:FB:EC:FA:5E:8E:35:B1:A8:A9:25:E3:08:16:01`
@@ -58,5 +64,6 @@
 ## Repository Governance & Living Documentation
 
 - **[`GEMINI.md`](./GEMINI.md):** Authoritative engineering standards & pre/post-task checklists for all contributors and AI agents.
+- **[`design.md`](./design.md):** Authoritative UI/UX design system, Obsidian Cockpit palette, and 250dp responsive layout rules.
 - **[`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md):** Detailed Clean Architecture + MVI module guide and mathematical specifications.
 - **[`CHANGELOG.md`](./CHANGELOG.md):** Semantic versioning release history.
