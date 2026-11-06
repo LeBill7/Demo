@@ -1,0 +1,66 @@
+name: AutoPulse Automated Release Pipeline
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build Production Artifacts & Publish GitHub Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "21"
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Enforce 500-Line File Limit
+        run: ./gradlew checkLineLimits --no-daemon
+
+      - name: Execute Automated Test Suite
+        run: ./gradlew test --no-daemon
+
+      - name: Build Production JAR & Release Bundle
+        run: ./gradlew build releaseBundle --no-daemon
+
+      - name: Prepare Release Artifacts & Checksums
+        run: |
+          mkdir -p dist-release
+          cp core/build/libs/*.jar dist-release/
+          cp build/distributions/*.zip dist-release/
+          cd dist-release
+          sha256sum * > SHA256SUMS.txt
+
+      - name: Extract Release Notes from CHANGELOG.md
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          awk "/^## \[${VERSION}\]/{flag=1; next} /^## \[/{flag=0} flag" CHANGELOG.md > dist-release/RELEASE_NOTES.md
+          if [ ! -s dist-release/RELEASE_NOTES.md ]; then
+            cp CHANGELOG.md dist-release/RELEASE_NOTES.md
+          fi
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "AutoPulse Android ${{ github.ref_name }}"
+          body_path: dist-release/RELEASE_NOTES.md
+          draft: false
+          prerelease: false
+          files: |
+            dist-release/*.jar
+            dist-release/*.zip
+            dist-release/SHA256SUMS.txt

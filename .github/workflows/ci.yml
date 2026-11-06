@@ -1,0 +1,39 @@
+name: AutoPulse Android CI Verification
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Enforce 500-Line Gate, Kotlin Test Suite & Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "21"
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Enforce 500-Line File Limit (GEMINI.md Rule #2)
+        run: ./gradlew checkLineLimits --no-daemon
+
+      - name: Run Full JUnit & Coroutine Test Suite
+        run: ./gradlew test --no-daemon
+
+      - name: Build Production Artifacts
+        run: ./gradlew build releaseBundle --no-daemon
