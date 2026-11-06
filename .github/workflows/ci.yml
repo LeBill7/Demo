@@ -39,4 +39,13 @@ jobs:
         run: ./gradlew :core:test --no-daemon
 
       - name: Assemble Installable Android APK & Release Bundle
-        run: ./gradlew :app:assembleDebug releaseBundle --no-daemon
+        run: ./gradlew :app:assembleDebug :app:assembleRelease releaseBundle --no-daemon
+
+      - name: Upload Installable Android APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: autopulse-apk
+          path: |
+            app/build/outputs/apk/release/app-release.apk
+            app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error

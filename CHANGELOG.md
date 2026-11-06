@@ -4,6 +4,14 @@ All notable changes to the **AutoPulse (Native Android Automotive Intelligence P
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-11-06
+
+### Changed
+- **APK Production Output (Replacing JAR Output):** Configured both GitHub Actions workflows (`.github/workflows/ci.yml` and `.github/workflows/release.yml`) and distribution Gradle tasks (`releaseBundle`) so that the primary output artifacts are installable Android APKs (`autopulse-v1.2.0.apk`, `autopulse-v1.2.0-debug.apk`) rather than JAR files.
+- **GitHub Actions CI Workflow Artifacts (`.github/workflows/ci.yml`):** Added an automated artifact upload step (`actions/upload-artifact@v4`) exporting installable Android APKs on every CI build.
+- **GitHub Actions Release Pipeline (`.github/workflows/release.yml`):** Removed JAR file copying (`core/build/libs/*.jar`) and release asset attachment; added workflow artifact uploads for release APKs and attached only `.apk`, `.zip` (APK bundle), and `SHA256SUMS.txt`.
+- **Distribution Bundle Optimization (`build.gradle.kts`):** Removed `:core` JAR packaging from `releaseBundle` to ensure the release bundle zip contains exclusively the APK binaries and governance documentation.
+
 ## [1.1.0] - 2026-11-06
 
 ### Added

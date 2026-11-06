@@ -116,5 +116,5 @@ AutoPulse is structured as a multi-module Kotlin 2.0+ & Jetpack Compose project 
 
 ## 7. CI/CD & Automated GitHub Releases
 
-- **Continuous Integration (`.github/workflows/ci.yml`):** Automatically executes `./gradlew checkLineLimits test build` on every push and pull request to `main`.
-- **Automated GitHub Releases (`.github/workflows/release.yml`):** Automatically triggers when a semantic version tag (`v*.*.*`) is pushed, builds production artifacts (`autopulse-android-vX.Y.Z-bundle.zip`, `autopulse-core-vX.Y.Z.jar`, and `SHA256SUMS.txt`), extracts release notes from `CHANGELOG.md`, and publishes a GitHub Release with compiled artifacts attached.
+- **Continuous Integration (`.github/workflows/ci.yml`):** Automatically executes `./gradlew checkLineLimits :core:test :app:assembleDebug :app:assembleRelease releaseBundle` on every push and pull request to `main`, publishing installable APK artifacts.
+- **Automated GitHub Releases (`.github/workflows/release.yml`):** Automatically triggers when a semantic version tag (`v*.*.*`) is pushed, builds production artifacts (`autopulse-vX.Y.Z.apk`, `autopulse-vX.Y.Z-debug.apk`, `autopulse-android-vX.Y.Z-release-bundle.zip`, and `SHA256SUMS.txt`), extracts release notes from `CHANGELOG.md`, and publishes a GitHub Release with compiled APK artifacts attached.

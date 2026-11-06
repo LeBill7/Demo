@@ -16,7 +16,7 @@ val versionProps = Properties().apply {
 
 allprojects {
     group = "com.autopulse.app"
-    version = versionProps.getProperty("VERSION_NAME", "1.1.0")
+    version = versionProps.getProperty("VERSION_NAME", "1.2.0")
 }
 
 tasks.register("checkLineLimits") {
@@ -52,21 +52,28 @@ tasks.register("checkLineLimits") {
     }
 }
 
+tasks.register("buildApk") {
+    group = "build"
+    description = "Assembles the installable Android APKs (debug and release)."
+    dependsOn(":app:assembleDebug", ":app:assembleRelease")
+}
+
 tasks.register<Zip>("releaseBundle") {
     group = "distribution"
-    description = "Packages compiled AutoPulse APK, core JAR, and docs for GitHub Release."
-    dependsOn(":core:build", ":app:assembleDebug", "checkLineLimits")
+    description = "Packages compiled AutoPulse Android APK and docs for GitHub Release."
+    dependsOn(":app:assembleRelease", ":app:assembleDebug", "checkLineLimits")
     archiveBaseName.set("autopulse-android")
     archiveVersion.set(project.version.toString())
     archiveClassifier.set("release-bundle")
     destinationDirectory.set(layout.buildDirectory.dir("distributions"))
 
-    from(project(":core").layout.buildDirectory.dir("libs")) {
-        into("libs")
+    from(project(":app").layout.buildDirectory.dir("outputs/apk/release")) {
+        include("*.apk")
+        into("apk/release")
     }
     from(project(":app").layout.buildDirectory.dir("outputs/apk/debug")) {
         include("*.apk")
-        into("apk")
+        into("apk/debug")
     }
     from("README.md", "CHANGELOG.md", "GEMINI.md", "version.properties")
     from("docs") {

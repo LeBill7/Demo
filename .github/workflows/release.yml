@@ -37,17 +37,24 @@ jobs:
       - name: Execute Automated Test Suite
         run: ./gradlew :core:test --no-daemon
 
-      - name: Build Installable Android APK, Core JAR & Release Bundle
+      - name: Build Installable Android APK & Release Bundle
         run: ./gradlew :app:assembleDebug :app:assembleRelease releaseBundle --no-daemon
 
       - name: Prepare Release Artifacts & Checksums
         run: |
           mkdir -p dist-release
-          cp app/build/outputs/apk/debug/app-debug.apk "dist-release/autopulse-${GITHUB_REF_NAME}.apk"
-          cp core/build/libs/*.jar dist-release/
+          cp app/build/outputs/apk/release/app-release.apk "dist-release/autopulse-${GITHUB_REF_NAME}.apk"
+          cp app/build/outputs/apk/debug/app-debug.apk "dist-release/autopulse-${GITHUB_REF_NAME}-debug.apk"
           cp build/distributions/*.zip dist-release/
           cd dist-release
           sha256sum * > SHA256SUMS.txt
+
+      - name: Upload Android APK Workflow Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: autopulse-release-apk
+          path: dist-release/*.apk
+          if-no-files-found: error
 
       - name: Extract Release Notes from CHANGELOG.md
         run: |
@@ -66,6 +73,5 @@ jobs:
           prerelease: false
           files: |
             dist-release/*.apk
-            dist-release/*.jar
             dist-release/*.zip
             dist-release/SHA256SUMS.txt
