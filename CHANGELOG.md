@@ -4,6 +4,13 @@ All notable changes to the **AutoPulse (Native Android Automotive Intelligence P
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.2] - 2026-11-06
+
+### Added
+- **Deterministic Release Keystore (`app/autopulse-release.jks`):** Embedded a dedicated, persistent PKCS12 release keystore valid through 2054 (`10,000` days) to ensure all local and CI builds generate identical APK signatures.
+- **Permanent APK Signing Configuration (`app/build.gradle.kts`):** Configured both `release` and `debug` build types to sign with `autopulse-release.jks` (with environment variable overrides supported).
+- **Consistent Certificate Fingerprint:** Guarantees 100% deterministic SHA-256 certificate digest (`05:44:DC:21:6A:AA:A5:57:E5:05:5B:6D:30:D5:E3:F3:A9:F8:FB:EC:FA:5E:8E:35:B1:A8:A9:25:E3:08:16:01`) across all builds and runners, preventing `INSTALL_FAILED_UPDATE_INCOMPATIBLE` app update errors.
+
 ## [1.2.1] - 2026-11-06
 
 ### Fixed

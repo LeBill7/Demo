@@ -16,7 +16,7 @@ val versionProps = Properties().apply {
 
 allprojects {
     group = "com.autopulse.app"
-    version = versionProps.getProperty("VERSION_NAME", "1.2.1")
+    version = versionProps.getProperty("VERSION_NAME", "1.2.2")
 }
 
 tasks.register("checkLineLimits") {

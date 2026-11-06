@@ -12,14 +12,28 @@ android {
         applicationId = "com.autopulse.app"
         minSdk = 26
         targetSdk = 34
-        versionCode = 4
-        versionName = "1.2.1"
+        versionCode = 5
+        versionName = "1.2.2"
+    }
+
+    signingConfigs {
+        create("release") {
+            storeFile = file(System.getenv("KEYSTORE_PATH") ?: "autopulse-release.jks")
+            storePassword = System.getenv("KEYSTORE_PASSWORD") ?: "autopulse2026"
+            keyAlias = System.getenv("KEY_ALIAS") ?: "autopulse"
+            keyPassword = System.getenv("KEY_PASSWORD") ?: "autopulse2026"
+            enableV1Signing = true
+            enableV2Signing = true
+        }
     }
 
     buildTypes {
+        debug {
+            signingConfig = signingConfigs.getByName("release")
+        }
         release {
             isMinifyEnabled = false
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName("release")
         }
     }
 
